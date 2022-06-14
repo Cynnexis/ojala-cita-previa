@@ -1,0 +1,5 @@
+beautifulsoup4~=4.11.1
+beepy~=1.0.7
+typeguard~=2.13.3
+urllib3~=1.26.9
+yapf~=0.32.0
