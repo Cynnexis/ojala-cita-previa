@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-from typing import Optional
+from typing import Optional, NoReturn
 
 import ojala_cita_previa as init_ojala
 import ojala_cita_previa.io.network as net
 import ojala_cita_previa.notification.message as message
 import ojala_cita_previa.notification.sound as sound
 
+import signal
 import urllib3
 import bs4
 
@@ -15,8 +16,22 @@ from ojala_cita_previa.arguments import AppArguments
 from ojala_cita_previa.utils.stopwatch import Stopwatch
 
 
-def main(args: AppArguments):
+def main(args: AppArguments) -> NoReturn:
 	net.init()
+
+	# Variable that indicates if the main loop should continue
+	keep_looping: bool = True
+
+	# noinspection PyUnusedLocal
+	def handle_exit_signals(signum=None, frame=None) -> NoReturn:
+		"""
+		Callback that handles an exit signal.
+		"""
+		nonlocal keep_looping
+		keep_looping = False
+		print('Stopping program...')
+
+	signal.signal(signal.SIGINT, handle_exit_signals)
 
 	# Define the default timeout for all request connections
 	request_timeout: urllib3.Timeout = urllib3.Timeout(
@@ -28,7 +43,7 @@ def main(args: AppArguments):
 	try:
 		last_status = None
 		index_url: str = 'https://icp.administracionelectronica.gob.es/icpplus/index.html'
-		while True:
+		while keep_looping:
 			request_stopwatch: Stopwatch = Stopwatch(start_now=True)
 			index_response: Optional[urllib3.response.HTTPResponse] = None
 			try:
@@ -86,7 +101,7 @@ def main(args: AppArguments):
 					sound.error()
 					last_status = False
 	except KeyboardInterrupt:
-		print('Stopping program...')
+		handle_exit_signals()
 
 	net.dispose()
 	print('Goodbye!')
