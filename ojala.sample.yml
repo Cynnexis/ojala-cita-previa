@@ -1,0 +1,59 @@
+#
+# Ojala Cita Previa configuration file.
+#
+
+# This file is a sample of the configuration you can apply on the Python script.
+# To use it, copy it and rename it as "ojala.yml".
+
+# The "request" object specify all the parameters to connect to the website.
+request:
+  # The connection timeout, in seconds.
+  connect_timeout_s: 5
+
+  # The reading timeout, in seconds.
+  read_timeout_s: 10
+
+# The "notifications" object let you customize how the script will notify you
+# when the website status changes.
+notifications:
+  # Play a sound when the website changes its status.
+  sound:
+    enabled: true
+
+  # Print a message in the console (recommended).
+  message:
+    enabled: true
+
+  # Send an email to the user.
+  # Note that you need to configure the SMTP request yourself in this block!
+  email:
+    # Indicates if the email notification should be used or not. If `true`, you
+    # need to fill all the fields to connect to the SMTP servers (recipients,
+    # host, port, username and password), or the script will crash at startup.
+    enabled: true
+
+    # The recipients, comma-separated, or as a YAML list. The notifications will
+    # be sent to all the recipients listed here.
+    recipients: john.doe@mail.com
+
+    # The SMTP server hostname.
+    host: smtp.mail.com
+
+    # The SMTP server port number.
+    port: 25
+
+    # The username to log in to the SMTP server.
+    username: ojala@mail.com
+
+    # The password to log in to the SMTP server.
+    password: mySecretPassw0rd!
+
+    # The email address from whence the email is sent. It is generally the same
+    # as the username.
+    from_email: ojala@mail.com
+
+    # Timeout in seconds.
+    timeout_s: 10
+
+# Indicates if the script should use verbose mode or not.
+verbose: false
